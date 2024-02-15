@@ -15,7 +15,20 @@ export async function deleteCabin(id) {
   const { data, error } = await supabase.from("cabins").delete().eq("id", id);
   if (error) {
     console.log(error);
-    throw new Error("Cabins could not able to delete data");
+    throw new Error("Cabin could not be deleted");
+  }
+  return data;
+}
+
+export async function addCabin(newCabin) {
+  const { data, error } = await supabase
+    .from("cabins")
+    .insert([newCabin])
+    .select();
+
+  if (error) {
+    console.log(error);
+    throw new Error("Unable to add Column");
   }
   return data;
 }
