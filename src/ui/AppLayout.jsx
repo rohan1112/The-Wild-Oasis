@@ -8,7 +8,7 @@ function AppLayout() {
     <StyledAppLayout>
       <Header />
       <Sidebar />
-      <Main>
+      <Main id="main">
         <Container>
           <Outlet />
         </Container>

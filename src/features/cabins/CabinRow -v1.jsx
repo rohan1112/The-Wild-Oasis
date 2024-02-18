@@ -6,7 +6,6 @@ import Modal from "../../ui/Modal";
 import { HiPencil, HiTrash } from "react-icons/hi2";
 import ConfirmDelete from "../../ui/ConfirmDelete";
 import Table from "../../ui/Table";
-import Menus from "../../ui/Menus";
 
 // const TableRow = styled.div`
 //   display: grid;
@@ -64,30 +63,37 @@ function CabinRow({ cabin }) {
         ) : (
           <span>&mdash;</span>
         )}
-        <div style={{ display: "flex", justifyItems: "center" }}>
+        <div>
           <Modal>
-            <Menus.Menu>
-              <Menus.Toggle id={id} />
-              <Menus.List id={id}>
-                <Modal.Open windowName="cabin-edit-form">
-                  <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
-                </Modal.Open>
-                <Modal.Open windowName="cabin-delete">
-                  <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
-                </Modal.Open>
-              </Menus.List>
-              <Modal.Window windowName="cabin-delete">
-                <ConfirmDelete
-                  resourceName="cabin"
-                  disabled={isDeleting}
-                  onConfirm={() => doDeleteCabin(id)}
-                />
-              </Modal.Window>
-              <Modal.Window windowName="cabin-edit-form">
-                <CreateCabinForm cabinData={cabin} />
-              </Modal.Window>
-            </Menus.Menu>
+            <Modal.Open windowName="cabin-edit-form">
+              <button>
+                <HiPencil />
+              </button>
+            </Modal.Open>
+            <Modal.Open windowName="cabin-delete">
+              <button>
+                <HiTrash />
+              </button>
+            </Modal.Open>
+            <Modal.Window windowName="cabin-delete">
+              <ConfirmDelete
+                resourceName="cabin"
+                disabled={isDeleting}
+                onConfirm={() => doDeleteCabin(id)}
+              />
+            </Modal.Window>
+            <Modal.Window windowName="cabin-edit-form">
+              <CreateCabinForm cabinData={cabin} />
+            </Modal.Window>
           </Modal>
+
+          {/* <Menus.Menu>
+            <Menus.Toggle id={id} />
+            <Menus.List id={id}>
+              <Menus.Button icon={<HiPencil />}>Edit</Menus.Button>
+              <Menus.Button icon={<HiTrash />}>Delete</Menus.Button>
+            </Menus.List>
+          </Menus.Menu> */}
         </div>
       </Table.Row>
     </>

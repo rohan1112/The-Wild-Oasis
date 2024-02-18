@@ -1,5 +1,5 @@
 import { useEffect, useRef } from "react";
-export default function useCloseModal(close) {
+export default function useOutsideClick(close) {
   const ref = useRef();
 
   useEffect(
