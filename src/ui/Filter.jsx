@@ -46,13 +46,14 @@ export default function Filter({ filterField, options }) {
   }
   return (
     <StyledFilter>
-      {options.map((option, index) => (
+      {options.map((option) => (
         <FilterButton
-          key={index}
-          onClick={() => handleClick(option.replace(" ", "-"))}
-          active={option === currentFilter}
+          key={option.value}
+          onClick={() => handleClick(option.value)}
+          active={option.value === currentFilter}
+          disabled={option.value === currentFilter}
         >
-          <span style={{ textTransform: "capitalize" }}>{option}</span>
+          {option.label}
         </FilterButton>
       ))}
       {/* <FilterButton onClick={() => handleClick("all")}>All</FilterButton>
