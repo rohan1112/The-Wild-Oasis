@@ -33,15 +33,13 @@ const Amount = styled.div`
 
 export default function BookingRow({ booking }) {
   const {
-    id: bookingId,
     start_date,
     end_date,
     num_nights,
-    num_guests,
     status,
     total_price,
-    cabins: { name: cabinName },
     guests: { full_name: guestName, email },
+    cabins: { name: cabinName },
   } = booking;
 
   const statusToTagName = {
@@ -49,6 +47,7 @@ export default function BookingRow({ booking }) {
     "checked-in": "green",
     "checked-out": "silver",
   };
+
   return (
     <Table.Row role="row">
       <Cabin>{cabinName}</Cabin>

@@ -5,9 +5,10 @@ import BookingRow from "./BookingRow";
 import useGetBookings from "./useGetBookings";
 
 export default function BookingsTable() {
-  const { bookings = [], isLoading } = useGetBookings();
-  if (!bookings.length) return <Empty resourceName={"booking"} />;
+  const { bookings, isLoading } = useGetBookings();
+
   if (isLoading) return <Spinner />;
+  if (!bookings.length) return <Empty resourceName={"booking"} />;
   console.log(bookings);
 
   return (
