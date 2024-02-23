@@ -2,7 +2,6 @@ import { PAGE_SIZE } from "../utils/constants";
 import supabase from "./supabase";
 
 export async function getBookings({ filter, sortBy, currentPage }) {
-  console.log(sortBy);
   let query = supabase
     .from("bookings")
     .select("*, cabins(name), guests(full_name, email)", { count: "exact" });
@@ -13,7 +12,7 @@ export async function getBookings({ filter, sortBy, currentPage }) {
   //2)Sorting
   if (sortBy)
     query = query.order(sortBy.field, {
-      ascending: sortBy.order === "asc" ? true : false,
+      ascending: sortBy.order === "asc",
     });
 
   //3)Pagination
@@ -27,8 +26,23 @@ export async function getBookings({ filter, sortBy, currentPage }) {
 
   if (error) {
     console.log(error);
-    throw new error("Could Not get the bookings");
+    throw new Error("Could Not get the bookings");
   }
 
   return { data, count };
+}
+
+export async function getBooking(id) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("*,cabins(*),guests(*)")
+    .eq("id", id)
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error("Could Not get the bookings");
+  }
+
+  return data;
 }

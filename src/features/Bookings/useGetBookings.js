@@ -21,7 +21,7 @@ export default function useGetBookings() {
   const sortBy = !sortValue || sortValue === "date" ? null : { field, order };
 
   //3)Pagination
-  let currentPage = !searchParams.get("page")
+  const currentPage = !searchParams.get("page")
     ? 1
     : Number(searchParams.get("page"));
 
