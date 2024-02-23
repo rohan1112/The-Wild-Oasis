@@ -1,11 +1,12 @@
 import Empty from "../../ui/Empty";
+import Pagination from "../../ui/Pagination";
 import Spinner from "../../ui/Spinner";
 import Table from "../../ui/Table";
 import BookingRow from "./BookingRow";
 import useGetBookings from "./useGetBookings";
 
 export default function BookingsTable() {
-  const { bookings, isLoading } = useGetBookings();
+  const { bookings, isLoading, count } = useGetBookings();
 
   if (isLoading) return <Spinner />;
   if (!bookings.length) return <Empty resourceName={"booking"} />;
@@ -24,6 +25,9 @@ export default function BookingsTable() {
         data={bookings}
         render={(booking) => <BookingRow booking={booking} key={booking.id} />}
       />
+      <Table.Footer>
+        <Pagination count={count} />
+      </Table.Footer>
     </Table>
   );
 }
