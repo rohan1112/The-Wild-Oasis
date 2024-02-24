@@ -7,7 +7,9 @@ export async function getBookings({ filter, sortBy, currentPage }) {
     .select("*, cabins(name), guests(full_name, email)", { count: "exact" });
 
   //1)filtering
-  if (filter) query = query.eq(filter.field, filter.value);
+  if (filter) {
+    query = query.eq(filter.field, filter.value);
+  }
 
   //2)Sorting
   if (sortBy)
@@ -21,6 +23,18 @@ export async function getBookings({ filter, sortBy, currentPage }) {
     const to = from + PAGE_SIZE - 1;
     query = query.range(from, to);
   }
+  // let from = 0; // Default starting index for pagination
+  // if (currentPage) {
+  //   from = (currentPage - 1) * PAGE_SIZE;
+  //   // Adjust current page if it exceeds the total number of pages after filtering
+  //   if (count && from >= count) {
+  //     currentPage = 1; // Reset current page to the first page
+  //     from = 0; // Reset starting index
+  //   }
+  // }
+
+  // const to = from + PAGE_SIZE - 1;
+  // query = query.range(from, to);
 
   const { data, error, count } = await query;
 
@@ -44,5 +58,20 @@ export async function getBooking(id) {
     throw new Error("Could Not get the bookings");
   }
 
+  return data;
+}
+
+export async function updateBooking(id, newBooking) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .update(newBooking)
+    .eq("id", id)
+    .select()
+    .single();
+
+  if (error) {
+    console.log(error);
+    throw new Error("Unable to Checked-in");
+  }
   return data;
 }

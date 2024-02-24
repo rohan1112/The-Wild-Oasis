@@ -25,14 +25,14 @@ export default function useGetBookings() {
     ? 1
     : Number(searchParams.get("page"));
 
-  //Query
-  const { data: { data: bookings, count } = {}, isLoading } = useQuery({
-    queryKey: ["Bookings", filter, sortBy, currentPage],
-    queryFn: () => getBookings({ filter, sortBy, currentPage }),
-  });
-
-  //preFetching
-  const pageCount = Math.ceil(count / PAGE_SIZE);
+    //Query
+    const { data: { data: bookings, count } = {}, isLoading } = useQuery({
+      queryKey: ["Bookings", filter, sortBy, currentPage],
+      queryFn: () => getBookings({ filter, sortBy, currentPage}),
+    });
+    
+    //preFetching
+    const pageCount = Math.ceil(count / PAGE_SIZE);
 
   if (currentPage < pageCount) {
     queryClient.prefetchQuery({

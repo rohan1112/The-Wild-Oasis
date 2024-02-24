@@ -1,4 +1,4 @@
-import { createContext, useContext, useRef, useState } from "react";
+import { createContext, useContext, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { HiEllipsisVertical } from "react-icons/hi2";
 import styled from "styled-components";
@@ -96,9 +96,17 @@ function Toggle({ id }) {
   }
 
   //Removing scroll functionality when menu is open
-  openId
-    ? (document.getElementById("main").style.overflow = "hidden")
-    : (document.getElementById("main").style.overflow = "auto");
+  useEffect(() => {
+    // Function to change overflow property when component mounts
+    openId
+      ? (document.getElementById("main").style.overflow = "hidden")
+      : (document.getElementById("main").style.overflow = "auto");
+
+    // Cleanup function to change overflow property when component unmounts
+    return () => {
+      document.getElementById("main").style.overflow = "auto"; // Reset overflow property
+    };
+  }, [openId]);
 
   return (
     <StyledToggle onClick={handleClick} ref={buttonRef}>
@@ -126,6 +134,7 @@ function Button({ children, icon, onClick }) {
     onClick?.();
     close();
   }
+
   return (
     <li>
       <StyledButton onClick={handleClick}>
