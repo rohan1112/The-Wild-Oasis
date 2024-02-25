@@ -14,6 +14,7 @@ import Spinner from "../../ui/Spinner";
 import BookingDataBox from "./BookingDataBox";
 import { useNavigate } from "react-router-dom";
 import useCheckout from "../check-in-out/useCheckout";
+import useDeleteBooking from "./useDeleteBooking";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -24,6 +25,8 @@ const HeadingGroup = styled.div`
 function BookingDetail() {
   const { booking, isLoading } = useBooking();
   const { checkout, isCheckingOut } = useCheckout();
+  const { deleteBooking, isDeleting } = useDeleteBooking();
+
   const navigate = useNavigate();
   const moveBack = useMoveBack();
 
@@ -50,6 +53,9 @@ function BookingDetail() {
       <BookingDataBox booking={booking} />
 
       <ButtonGroup>
+        <Button variation="danger" onClick={() => deleteBooking(bookingId)}>
+          Delete Booking
+        </Button>
         {status === "unconfirmed" && (
           <Button onClick={() => navigate(`/checkin/${bookingId}`)}>
             Check In

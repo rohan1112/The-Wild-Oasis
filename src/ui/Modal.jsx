@@ -58,10 +58,8 @@ const ModalContext = createContext();
 export default function Modal({ children }) {
   const [openWindowName, setOpenWindowName] = useState("");
 
-  function open(windowName) {
-    setOpenWindowName(windowName);
-  }
   const close = () => setOpenWindowName("");
+  const open = setOpenWindowName;
   return (
     <ModalContext.Provider value={{ open, close, openWindowName }}>
       {children}
@@ -85,8 +83,7 @@ function Window({ children, windowName }) {
         <Button onClick={close}>
           <HiXMark />
         </Button>
-        {cloneElement(children, { onCloseModal: close })}
-        {/* {children} */}
+        <div>{cloneElement(children, { onCloseModal: close })}</div>
       </StyledModal>
     </Overlay>,
     document.body
