@@ -15,6 +15,8 @@ import BookingDataBox from "./BookingDataBox";
 import { useNavigate } from "react-router-dom";
 import useCheckout from "../check-in-out/useCheckout";
 import useDeleteBooking from "./useDeleteBooking";
+import Modal from "../../ui/Modal";
+import ConfirmDelete from "../../ui/ConfirmDelete";
 
 const HeadingGroup = styled.div`
   display: flex;
@@ -53,9 +55,20 @@ function BookingDetail() {
       <BookingDataBox booking={booking} />
 
       <ButtonGroup>
-        <Button variation="danger" onClick={() => deleteBooking(bookingId)}>
-          Delete Booking
-        </Button>
+        <Modal>
+          <Modal.Open windowName="delete-Booking">
+            <Button variation="danger">Delete Booking</Button>
+          </Modal.Open>
+          <Modal.Window windowName="delete-Booking">
+            <ConfirmDelete
+              resourceName="booking"
+              onConfirm={() =>
+                deleteBooking(bookingId, { onSettled: () => navigate(-1) })
+              }
+              disabled={isDeleting}
+            />
+          </Modal.Window>
+        </Modal>
         {status === "unconfirmed" && (
           <Button onClick={() => navigate(`/checkin/${bookingId}`)}>
             Check In
