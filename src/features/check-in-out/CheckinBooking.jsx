@@ -14,6 +14,7 @@ import { useEffect, useState } from "react";
 import { useCheckin } from "./useCheckin";
 import useSettings from "../settings/useSettings";
 import { formatCurrency } from "../../utils/helpers";
+import useCheckout from "./useCheckout";
 
 const Box = styled.div`
   /* Box */
@@ -28,6 +29,7 @@ function CheckinBooking() {
   const [addBreakfast, setAddBreakfast] = useState(false);
   const { booking, isLoading } = useBooking();
   const { checkin, isCheckingIn } = useCheckin();
+  const { checkout, isCheckingOut } = useCheckout();
   const { settingsData, isLoading: isLoadingSettings } = useSettings();
   const moveBack = useMoveBack();
 
@@ -42,6 +44,7 @@ function CheckinBooking() {
 
   const {
     id: bookingId,
+    status,
     guests,
     total_price,
     num_guests,
@@ -68,6 +71,11 @@ function CheckinBooking() {
     } else {
       checkin({ bookingId, breakfast: {} });
     }
+  }
+
+  function handleCheckout() {
+    if (!confirmPaid) return;
+    checkout(bookingId);
   }
 
   return (
@@ -112,9 +120,22 @@ function CheckinBooking() {
       </Box>
 
       <ButtonGroup>
-        <Button onClick={handleCheckin} disabled={!confirmPaid || isCheckingIn}>
-          Check in booking #{bookingId}
-        </Button>
+        {status === "checked-in" && (
+          <Button
+            onClick={handleCheckout}
+            disabled={!confirmPaid || isCheckingOut}
+          >
+            Check Out
+          </Button>
+        )}
+        {status === "unconfirmed" && (
+          <Button
+            onClick={handleCheckin}
+            disabled={!confirmPaid || isCheckingIn || isCheckingOut}
+          >
+            Check in booking #{bookingId}
+          </Button>
+        )}
         <Button variation="secondary" onClick={moveBack}>
           Back
         </Button>

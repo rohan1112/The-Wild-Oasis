@@ -4,8 +4,13 @@ import Tag from "../../ui/Tag";
 import { formatCurrency, formatDistanceFromNow } from "../../utils/helpers";
 import { format, isToday } from "date-fns";
 import Menus from "../../ui/Menus";
-import { HiArrowRightOnRectangle, HiEye } from "react-icons/hi2";
+import {
+  HiArrowLeftOnRectangle,
+  HiArrowRightOnRectangle,
+  HiEye,
+} from "react-icons/hi2";
 import { useNavigate } from "react-router-dom";
+import useCheckout from "../check-in-out/useCheckout";
 
 const Cabin = styled.div`
   font-size: 1.6rem;
@@ -35,6 +40,7 @@ const Amount = styled.div`
 `;
 
 export default function BookingRow({ booking }) {
+  const { checkout, isCheckingOut } = useCheckout();
   const navigate = useNavigate();
 
   const {
@@ -91,6 +97,14 @@ export default function BookingRow({ booking }) {
               onClick={() => navigate(`/checkin/${bookingId}`)}
             >
               Check In
+            </Menus.Button>
+          )}
+          {status === "checked-in" && (
+            <Menus.Button
+              icon={<HiArrowLeftOnRectangle />}
+              onClick={() => checkout(bookingId)}
+            >
+              Check Out
             </Menus.Button>
           )}
         </Menus.List>

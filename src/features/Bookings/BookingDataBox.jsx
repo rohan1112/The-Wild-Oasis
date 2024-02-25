@@ -11,6 +11,8 @@ import DataItem from "../../ui/DataItem";
 import { Flag } from "../../ui/Flag";
 
 import { formatDistanceFromNow, formatCurrency } from "../../utils/helpers";
+import useSettings from "../settings/useSettings";
+import Spinner from "../../ui/Spinner";
 
 const StyledBookingDataBox = styled.section`
   /* Box */
@@ -124,6 +126,11 @@ function BookingDataBox({ booking }) {
     cabins: { name: cabinName },
   } = booking;
 
+  const { settingsData, isLoading } = useSettings();
+  if (isLoading) return <Spinner />;
+
+  const { breakfast_price } = settingsData;
+
   return (
     <StyledBookingDataBox>
       <Header>
@@ -167,7 +174,11 @@ function BookingDataBox({ booking }) {
         )}
 
         <DataItem icon={<HiOutlineCheckCircle />} label="Breakfast included?">
-          {has_breakfast ? "Yes" : "No"}
+          {has_breakfast
+            ? "Yes"
+            : `No-if want to include Breakfast Price will be ${formatCurrency(
+                breakfast_price * num_nights * num_guests
+              )}`}
         </DataItem>
 
         <Price is_paid={is_paid && "true"}>
