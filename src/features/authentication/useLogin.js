@@ -8,8 +8,9 @@ export function useLogin() {
   const navigate = useNavigate();
   const { mutate: loginUser, isLoading: isLogging } = useMutation({
     mutationFn: (loginData) => login(loginData),
-    onSuccess: () => {
+    onSuccess: (user) => {
       toast.success("Successfully logged in");
+      queryClient.setQueriesData(["user"], user);
       navigate("/dashboard");
     },
     onError: (err) => {
