@@ -1,7 +1,12 @@
 import styled from "styled-components";
+import LogoutButton from "../features/authentication/LogoutButton";
 
 function Header() {
-  return <StyledHeader>Header</StyledHeader>;
+  return (
+    <StyledHeader>
+      <LogoutButton />
+    </StyledHeader>
+  );
 }
 
 const StyledHeader = styled.header`
