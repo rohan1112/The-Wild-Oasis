@@ -1,4 +1,5 @@
 import { PAGE_SIZE } from "../utils/constants";
+import { getToday } from "../utils/helpers";
 import supabase from "./supabase";
 
 export async function getBookings({ filter, sortBy, currentPage }) {
@@ -23,18 +24,6 @@ export async function getBookings({ filter, sortBy, currentPage }) {
     const to = from + PAGE_SIZE - 1;
     query = query.range(from, to);
   }
-  // let from = 0; // Default starting index for pagination
-  // if (currentPage) {
-  //   from = (currentPage - 1) * PAGE_SIZE;
-  //   // Adjust current page if it exceeds the total number of pages after filtering
-  //   if (count && from >= count) {
-  //     currentPage = 1; // Reset current page to the first page
-  //     from = 0; // Reset starting index
-  //   }
-  // }
-
-  // const to = from + PAGE_SIZE - 1;
-  // query = query.range(from, to);
 
   const { data, error, count } = await query;
 
@@ -83,5 +72,37 @@ export async function deleteBookingAPI(id) {
     console.log(error);
     throw new Error("Unable to delete booking");
   }
+  return data;
+}
+
+export async function getBookingsAfterDate(date) {
+  const { data, error } = await supabase
+    .from("bookings")
+    .select("created_at, total_price, extras_price")
+    .gte("created_at", date)
+    .lte("created_at", getToday({ end: true }));
+
+  if (error) {
+    console.error(error);
+    throw new Error("Bookings could not get loaded");
+  }
+
+  return data;
+}
+
+// Returns all STAYS that are were created after the given date
+export async function getStaysAfterDate(date) {
+  const { data, error } = await supabase
+    .from("bookings")
+    // .select('*')
+    .select("*, guests(full_name)")
+    .gte("start_date", date)
+    .lte("start_date", getToday());
+
+  if (error) {
+    console.error(error);
+    throw new Error("Bookings could not get loaded");
+  }
+
   return data;
 }
