@@ -11,7 +11,13 @@ import {
 } from "recharts";
 import { useDarkMode } from "../../context/DarkModeContext";
 import Heading from "../../ui/Heading";
-import { eachDayOfInterval, format, isSameDay, subDays } from "date-fns";
+import {
+  eachDayOfInterval,
+  format,
+  formatDate,
+  isSameDay,
+  subDays,
+} from "date-fns";
 
 const StyledSalesChart = styled(DashboardBox)`
   grid-column: 1 / -1;
@@ -59,7 +65,10 @@ export default function SalesChart({ bookings, numDays }) {
 
   return (
     <StyledSalesChart>
-      <Heading as="h2">Sales</Heading>
+      <Heading as="h2">
+        Sales from {format(allDates.at(0), "MMM dd yyyy")} &mdash; to
+        {format(allDates.at(-1), "MMM dd yyyy")};
+      </Heading>
       <ResponsiveContainer height={300} width="100%">
         <AreaChart data={data}>
           <XAxis
