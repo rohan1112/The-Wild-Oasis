@@ -14,7 +14,7 @@ export default function useOutsideClick(close, listenCapturing = true) {
       return () =>
         document.removeEventListener("click", handleClick, listenCapturing);
     },
-    [close]
+    [close, listenCapturing]
   );
   return { ref };
 }
