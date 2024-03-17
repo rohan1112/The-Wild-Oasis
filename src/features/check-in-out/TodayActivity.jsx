@@ -42,7 +42,6 @@ const NoActivity = styled.p`
 function TodayActivity() {
   const { activities, isLoading } = useTodayActivity();
   if (isLoading) return <Spinner />;
-  console.log(activities);
 
   return (
     <StyledToday>
